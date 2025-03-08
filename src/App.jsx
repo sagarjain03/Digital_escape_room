@@ -1,9 +1,10 @@
 import React from 'react'
+import GuessAndG from './components/GuessAndG'
 
 const App = () => {
   return (
     <div>
-      <h1 className='bg-red-900 '>hello world</h1>
+      <GuessAndG/>
     </div>
   )
 }
