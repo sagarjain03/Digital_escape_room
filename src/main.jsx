@@ -8,8 +8,12 @@ import { ClerkProvider } from '@clerk/clerk-react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Reaction from './components/Reaction';
 import GuessAndG from './components/GuessAndG';
-import ProtectedRoute from './components/ProtectedRoute'; // Protected Route import kiya
-
+import ProtectedRoute from './components/ProtectedRoute'; 
+import CipherString from './components/CipherString'
+import SequenceMemory from './components/SequenceMemory'
+import store from './redux/store'
+import { Provider } from 'react-redux'
+import Score from './components/Score'
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -20,9 +24,10 @@ if (!PUBLISHABLE_KEY) {
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
+      <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home/>} />
           <Route
             path="/guess"
             element={
@@ -35,7 +40,27 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             path="/reaction"
             element={
               <ProtectedRoute>
+                <Score/>
                 <Reaction />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/string-game"
+            element={
+              <ProtectedRoute>
+                <Score/>
+                <CipherString />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sequence-memory"
+            element={
+              <ProtectedRoute>
+                <Score/>
+                <SequenceMemory/>
+              
               </ProtectedRoute>
             }
           />
@@ -43,6 +68,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
+
+      </Provider>
+      
     </ClerkProvider>
   </React.StrictMode>
 );

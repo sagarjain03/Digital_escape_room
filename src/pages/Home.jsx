@@ -12,7 +12,7 @@ const Home = () => {
       <div>
         {isSignedIn ? (
           <>
-            <Link to="/reaction" className="mx-4">Let's Go</Link>
+            <Link to="/string-game" className="mx-4">Let's Go</Link>
            
             <UserButton />
           </>

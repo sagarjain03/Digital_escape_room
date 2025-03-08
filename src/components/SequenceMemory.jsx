@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 export default function SequenceMemoryGame() {
+  const navigate = useNavigate(); // Initialize navigate
+
   const difficulties = {
     easy: { gridSize: 3, maxLevel: 5, points: 10 },
     medium: { gridSize: 4, maxLevel: 8, points: 20 },
@@ -29,22 +32,23 @@ export default function SequenceMemoryGame() {
 
   const startGame = () => {
     setGameOver(false);
-    setVictory(false); // Reset victory state first
+    setVictory(false);
     setSequence([]);
     setUserInput([]);
     setClickedBox(null);
     setWrongBox(null);
     setShowingSequence(false);
     setScore(0);
-    setLevel(0); // <-- Reset level to 0 before starting the game
-  
-    setTimeout(() => nextRound([]), 100); // Start fresh
+    setLevel(0);
+
+    setTimeout(() => nextRound([]), 100);
   };
 
   const nextRound = (prevSequence) => {
     if (level >= maxLevel) {
       setVictory(true);
-      setScore(points);
+      setScore((prevScore) => prevScore + points); // Increment score
+      setTimeout(() => navigate("/guess"), 2000); // Redirect after 2 seconds
       return;
     }
     const newBox = Math.floor(Math.random() * (gridSize * gridSize));
@@ -82,17 +86,21 @@ export default function SequenceMemoryGame() {
 
   const checkUserInput = () => {
     if (userInput.every((box, index) => box === sequence[index])) {
+      setScore((prevScore) => prevScore + points); // Increment score after a correct sequence
+  
       if (userInput.length === sequence.length && level === maxLevel - 1) {
         setVictory(true);
-        setScore(points);
+        setTimeout(() => navigate("/guess"), 2000); // Redirect after 2 seconds
         return;
       }
-      setLevel(level + 1);
+  
+      setLevel((prevLevel) => prevLevel + 1);
       setTimeout(() => nextRound(sequence), 1000);
     } else {
       setGameOver(true);
     }
   };
+  
 
   const handleDifficultyChange = (newDifficulty) => {
     setDifficulty(newDifficulty);
@@ -127,28 +135,34 @@ export default function SequenceMemoryGame() {
         <div>
           <p className="text-green-500 text-2xl font-bold">🎉 Congratulations! You Won! 🎉</p>
           <p className="text-yellow-400 text-xl">You earned {score} points!</p>
-          <button onClick={startGame} className="mt-4 px-4 py-2 bg-blue-500 rounded">Play Again</button>
+          <button onClick={startGame} className="mt-4 px-4 py-2 bg-blue-500 rounded">
+            Play Again
+          </button>
         </div>
       ) : gameOver ? (
         <div>
           <p className="text-red-500 text-2xl font-bold">Game Over! Try Again</p>
-          <button onClick={startGame} className="mt-4 px-4 py-2 bg-blue-500 rounded">Restart</button>
+          <button onClick={startGame} className="mt-4 px-4 py-2 bg-blue-500 rounded">
+            Restart
+          </button>
         </div>
       ) : (
-        <><p className="mb-2">Level: {level} / {maxLevel}</p>
-        <div className="grid gap-2 mt-4" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
-          {[...Array(gridSize * gridSize)].map((_, index) => (
-            <button
-              key={index}
-              id={`box-${index}`}
-              onClick={() => handleUserClick(index)}
-              className={`w-16 h-16 rounded-lg border border-gray-500 transition-colors duration-200 ${
-                clickedBox === index ? "bg-white" : wrongBox === index ? "bg-red-500" : "bg-gray-700"
-              }`}
-              disabled={showingSequence}
-            ></button>
-          ))}
-        </div></>
+        <>
+          <p className="mb-2">Level: {level} / {maxLevel}</p>
+          <div className="grid gap-2 mt-4" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
+            {[...Array(gridSize * gridSize)].map((_, index) => (
+              <button
+                key={index}
+                id={`box-${index}`}
+                onClick={() => handleUserClick(index)}
+                className={`w-16 h-16 rounded-lg border border-gray-500 transition-colors duration-200 ${
+                  clickedBox === index ? "bg-white" : wrongBox === index ? "bg-red-500" : "bg-gray-700"
+                }`}
+                disabled={showingSequence}
+              ></button>
+            ))}
+          </div>
+        </>
       )}
       {!gameOver && !victory && sequence.length === 0 && (
         <button onClick={startGame} className="mt-6 px-4 py-2 bg-blue-500 rounded text-white">
