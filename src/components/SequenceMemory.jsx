@@ -4,7 +4,7 @@ export default function SequenceMemoryGame() {
   const difficulties = {
     easy: { gridSize: 3, maxLevel: 5, points: 10 },
     medium: { gridSize: 4, maxLevel: 8, points: 20 },
-    hard: { gridSize: 5, maxLevel: 10, points: 30 },
+    hard: { gridSize: 5, maxLevel: 8, points: 30 },
   };
 
   const [difficulty, setDifficulty] = useState("easy");
