@@ -84,17 +84,21 @@ const GuessAndG = () => {
     }
   };
 
-  // Check if the game is won
+  // Check if the game is won and navigate to Leaderboard
   useEffect(() => {
     if (solved.length === cards.length && cards.length > 0) {
       setWon(true);
       const points = difficulty === "easy" ? 10 : difficulty === "medium" ? 20 : 30;
       dispatch(updateScore(points));
-      console.log(points);
       setScore(points);
-      dispatch(stopTimer()); 
+      dispatch(stopTimer());
+
+      // Navigate to the leaderboard after 2 seconds
+      setTimeout(() => {
+        navigate("/Leaderboard");
+      }, 2000);
     }
-  }, [solved, cards, difficulty]);
+  }, [solved, cards, difficulty, dispatch, navigate]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
@@ -143,13 +147,7 @@ const GuessAndG = () => {
         ))}
       </div>
 
-      {/* Restart Button */}
-      <button
-        onClick={initialGame}
-        className="mt-6 px-4 py-2 bg-red-600 text-white font-semibold rounded-md hover:bg-red-700 transition"
-      >
-        Restart Game
-      </button>
+     
     </div>
   );
 };

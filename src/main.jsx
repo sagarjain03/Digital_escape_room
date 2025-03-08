@@ -14,6 +14,7 @@ import SequenceMemory from './components/SequenceMemory'
 import store from './redux/store'
 import { Provider } from 'react-redux'
 import Score from './components/Score'
+import Leaderboard from './pages/Leaderboard';
 // Import your Publishable Key
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -61,6 +62,16 @@ ReactDOM.createRoot(document.getElementById('root')).render(
               <ProtectedRoute>
                 <Score/>
                 <SequenceMemory/>
+              
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/Leaderboard"
+            element={
+              <ProtectedRoute>
+                
+                <Leaderboard/>
               
               </ProtectedRoute>
             }
