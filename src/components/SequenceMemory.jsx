@@ -29,15 +29,16 @@ export default function SequenceMemoryGame() {
 
   const startGame = () => {
     setGameOver(false);
-    setVictory(false);
+    setVictory(false); // Reset victory state first
     setSequence([]);
     setUserInput([]);
-    setLevel(1);
     setClickedBox(null);
     setWrongBox(null);
     setShowingSequence(false);
     setScore(0);
-    setTimeout(() => nextRound([]), 100);
+    setLevel(0); // <-- Reset level to 0 before starting the game
+  
+    setTimeout(() => nextRound([]), 100); // Start fresh
   };
 
   const nextRound = (prevSequence) => {
@@ -81,7 +82,7 @@ export default function SequenceMemoryGame() {
 
   const checkUserInput = () => {
     if (userInput.every((box, index) => box === sequence[index])) {
-      if (level + 1 > maxLevel) {
+      if (userInput.length === sequence.length && level === maxLevel - 1) {
         setVictory(true);
         setScore(points);
         return;
@@ -122,7 +123,6 @@ export default function SequenceMemoryGame() {
           </button>
         ))}
       </div>
-      <p className="mb-2">Level: {level} / {maxLevel}</p>
       {victory ? (
         <div>
           <p className="text-green-500 text-2xl font-bold">🎉 Congratulations! You Won! 🎉</p>
@@ -135,6 +135,7 @@ export default function SequenceMemoryGame() {
           <button onClick={startGame} className="mt-4 px-4 py-2 bg-blue-500 rounded">Restart</button>
         </div>
       ) : (
+        <><p className="mb-2">Level: {level} / {maxLevel}</p>
         <div className="grid gap-2 mt-4" style={{ gridTemplateColumns: `repeat(${gridSize}, 1fr)` }}>
           {[...Array(gridSize * gridSize)].map((_, index) => (
             <button
@@ -147,7 +148,7 @@ export default function SequenceMemoryGame() {
               disabled={showingSequence}
             ></button>
           ))}
-        </div>
+        </div></>
       )}
       {!gameOver && !victory && sequence.length === 0 && (
         <button onClick={startGame} className="mt-6 px-4 py-2 bg-blue-500 rounded text-white">
