@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { updateScore } from "../redux/points/pointsSlice";
+import { stopTimer } from "../redux/timer/timerSlice";
 
 const GuessAndG = () => {
   const [difficulty, setDifficulty] = useState("easy");
@@ -9,6 +13,9 @@ const GuessAndG = () => {
   const [disabled, setDisabled] = useState(false);
   const [won, setWon] = useState(false);
   const [score, setScore] = useState(0);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Set grid size based on difficulty
   useEffect(() => {
@@ -82,7 +89,10 @@ const GuessAndG = () => {
     if (solved.length === cards.length && cards.length > 0) {
       setWon(true);
       const points = difficulty === "easy" ? 10 : difficulty === "medium" ? 20 : 30;
+      dispatch(updateScore(points));
+      console.log(points);
       setScore(points);
+      dispatch(stopTimer()); 
     }
   }, [solved, cards, difficulty]);
 

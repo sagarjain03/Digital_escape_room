@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useDispatch } from "react-redux"; // Import useDispatch
+import { updateScore } from "../redux/points/pointsSlice"; // Import updateScore action
 
 export default function SequenceMemoryGame() {
   const navigate = useNavigate(); // Initialize navigate
+  const dispatch = useDispatch(); // Initialize dispatch
 
   const difficulties = {
     easy: { gridSize: 3, maxLevel: 5, points: 10 },
@@ -29,6 +32,12 @@ export default function SequenceMemoryGame() {
       checkUserInput();
     }
   }, [userInput]);
+
+  useEffect(() => {
+    if (victory) {
+      dispatch(updateScore(difficulties[difficulty].points)); // Dispatch when victory is achieved
+    }
+  }, [victory, dispatch, score]);
 
   const startGame = () => {
     setGameOver(false);
@@ -134,7 +143,8 @@ export default function SequenceMemoryGame() {
       {victory ? (
         <div>
           <p className="text-green-500 text-2xl font-bold">🎉 Congratulations! You Won! 🎉</p>
-          <p className="text-yellow-400 text-xl">You earned {score} points!</p>
+          <p>You earned : {difficulties[difficulty].points} points</p>
+          <p>Redirecting to Guess the Number Game...</p>
           <button onClick={startGame} className="mt-4 px-4 py-2 bg-blue-500 rounded">
             Play Again
           </button>
