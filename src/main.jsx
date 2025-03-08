@@ -32,6 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             path="/guess"
             element={
               <ProtectedRoute>
+                <Score/>
                 <GuessAndG />
               </ProtectedRoute>
             }

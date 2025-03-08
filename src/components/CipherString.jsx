@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateScore } from "../redux/points/pointsSlice"; 
+import { startTimer, stopTimer, resetTimer, incrementTime } from "../redux/timer/timerSlice";
 
 const levels = {
   easy: { points: 10, strings: ["Hello, World!", "React is fun"] },
@@ -37,6 +38,8 @@ const CipherString = () => {
     setScrambled(shuffleString(chosen));
     setUserInput("");
     setGameState("playing");
+    dispatch(resetTimer());
+    dispatch(startTimer());
   };
 
   const handleSubmit = () => {
@@ -79,7 +82,6 @@ const CipherString = () => {
       {gameState === "lost" && (
         <div style={{ marginTop: "20px", color: "red" }}>
           <h2>❌ Try Again! ❌</h2>
-          <p>The correct sentence was: "{original}"</p>
           <button onClick={startNewGame} style={{ padding: "10px 20px", background: "blue", color: "white", border: "none", cursor: "pointer", borderRadius: "5px" }}>Retry</button>
         </div>
       )}
