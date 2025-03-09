@@ -27,7 +27,7 @@ import { incrementTime } from "../redux/timer/timerSlice";
   const score = useSelector((state) => state.points.score); // Get score from Redux
 
   return (
-    <div className="text-center p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+    <div className="text-center p-4 bg-white text-black rounded-lg shadow-lg">
       <div className="flex justify-between">
         <div>
           <h2 className="text-2xl font-bold">Score</h2>

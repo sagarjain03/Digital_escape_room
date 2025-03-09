@@ -125,15 +125,15 @@ export default function SequenceMemoryGame() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-      <h1 className="text-2xl font-bold mb-4">Sequence Memory Game</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-8">
+      <h1 className="text-2xl font-bold mb-4 text-black">Sequence Memory Game</h1>
       <div className="mb-4">
         {Object.keys(difficulties).map((diff) => (
           <button
             key={diff}
             onClick={() => handleDifficultyChange(diff)}
             className={`px-4 py-2 mx-2 rounded ${
-              difficulty === diff ? "bg-blue-500" : "bg-gray-700"
+              difficulty === diff ? "bg-blue-500" : "bg-gray-200"
             }`}
           >
             {diff.charAt(0).toUpperCase() + diff.slice(1)}
@@ -166,7 +166,7 @@ export default function SequenceMemoryGame() {
                 id={`box-${index}`}
                 onClick={() => handleUserClick(index)}
                 className={`w-16 h-16 rounded-lg border border-gray-500 transition-colors duration-200 ${
-                  clickedBox === index ? "bg-white" : wrongBox === index ? "bg-red-500" : "bg-gray-700"
+                  clickedBox === index ? "bg-white" : wrongBox === index ? "bg-red-500" : "bg-gray-200"
                 }`}
                 disabled={showingSequence}
               ></button>

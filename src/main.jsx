@@ -51,7 +51,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             path="/string-game"
             element={
               <ProtectedRoute>
-                <Score/>
+                
                 <CipherString />
               </ProtectedRoute>
             }

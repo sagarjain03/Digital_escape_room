@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { updateScore } from "../redux/points/pointsSlice"; 
+import Score from "./Score";
+import { updateScore } from "../redux/points/pointsSlice";
 import { startTimer, stopTimer, resetTimer, incrementTime } from "../redux/timer/timerSlice";
 
 const levels = {
@@ -23,9 +24,9 @@ const CipherString = () => {
   const [original, setOriginal] = useState("");
   const [userInput, setUserInput] = useState("");
   const [gameState, setGameState] = useState("playing");
-  
-  const dispatch = useDispatch(); 
-  const navigate = useNavigate(); 
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     startNewGame();
@@ -45,19 +46,28 @@ const CipherString = () => {
   const handleSubmit = () => {
     if (userInput.trim() === original) {
       setGameState("won");
-      dispatch(updateScore(levels[difficulty].points)); 
-      setTimeout(() => navigate("/reaction"), 2000); 
+      dispatch(updateScore(levels[difficulty].points));
+      setTimeout(() => navigate("/reaction"), 2000);
     } else {
       setGameState("lost");
     }
   };
 
   return (
-    <div style={{ height: "100vh", width: "100vw", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", background: "#121212", color: "#fff", textAlign: "center" }}>
-      <h2>🔐 Cipher String Game</h2>
-      <div>
+    <>
+    <Score />
+    <div className="bg-white text-black h-screen w-screen flex flex-col justify-center items-center text-center">
+      <h2 className="text-2xl font-bold mb-4">🔐 Cipher String Game</h2>
+
+      <div className="mb-4">
         {["easy", "medium", "hard"].map((level) => (
-          <button key={level} onClick={() => setDifficulty(level)} style={{ margin: "5px", padding: "10px", background: difficulty === level ? "#4c8bf5" : "#555", color: "white", border: "none", cursor: "pointer" }}>
+          <button
+            key={level}
+            onClick={() => setDifficulty(level)}
+            className={`m-1 px-4 py-2 rounded ${
+              difficulty === level ? "bg-blue-500 text-white" : "bg-gray-300 text-black"
+            }`}
+          >
             {level.charAt(0).toUpperCase() + level.slice(1)}
           </button>
         ))}
@@ -65,28 +75,46 @@ const CipherString = () => {
 
       {gameState === "playing" && (
         <>
-          <p style={{ fontSize: "18px", margin: "20px 0" }}>🔀 Scrambled: {scrambled}</p>
-          <input type="text" placeholder="Type the correct sentence" value={userInput} onChange={(e) => setUserInput(e.target.value)} style={{ padding: "10px", width: "80%", maxWidth: "400px", borderRadius: "5px" }} />
+          <p className="text-lg my-4">🔀 Scrambled: {scrambled}</p>
+          <input
+            type="text"
+            placeholder="Type the correct sentence"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            className="p-2 w-80 border rounded-md"
+          />
           <br />
-          <button onClick={handleSubmit} style={{ marginTop: "10px", padding: "10px 20px", background: "green", color: "white", border: "none", cursor: "pointer", borderRadius: "5px" }}>Submit</button>
+          <button
+            onClick={handleSubmit}
+            className="mt-4 px-6 py-2 bg-green-500 text-white rounded-md"
+          >
+            Submit
+          </button>
         </>
       )}
 
       {gameState === "won" && (
-        <div style={{ marginTop: "20px", color: "lime" }}>
-          <h2>🎉 Congratulations! You Won! 🎉</h2>
+        <div className="mt-4 text-green-600">
+          <h2 className="text-xl font-bold">🎉 Congratulations! You Won! 🎉</h2>
           <p>Redirecting to Reaction Game...</p>
         </div>
       )}
 
       {gameState === "lost" && (
-        <div style={{ marginTop: "20px", color: "red" }}>
-          <h2>❌ Try Again! ❌</h2>
-          <button onClick={startNewGame} style={{ padding: "10px 20px", background: "blue", color: "white", border: "none", cursor: "pointer", borderRadius: "5px" }}>Retry</button>
+        <div className="mt-4 text-red-600">
+          <h2 className="text-xl font-bold">❌ Try Again! ❌</h2>
+          <button
+            onClick={startNewGame}
+            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md"
+          >
+            Retry
+          </button>
         </div>
       )}
     </div>
+    </>
   );
+  
 };
 
 export default CipherString;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { updateScore } from "../redux/points/pointsSlice";
@@ -33,7 +33,7 @@ function Reaction() {
             setIsTargetVisible(true);
             setStartTime(Date.now());
             setButtonPosition({
-                top: `${Math.floor(Math.random() * 60) + 20}%`,  // Restrict extreme positions
+                top: `${Math.floor(Math.random() * 60) + 20}%`,
                 left: `${Math.floor(Math.random() * 60) + 20}%`,
             });
         }, Math.floor(Math.random() * (maxDelay - minDelay)) + minDelay);
@@ -80,8 +80,8 @@ function Reaction() {
     const endGame = (status, finalScore) => {
         setGameStatus(status);
         setIsStarted(false);
-        dispatch(updateScore(finalScore)); // Ensure latest score is passed
-        setTimeout(() => navigate("/sequence-memory"), 1000); // Redirect after 1 sec
+        dispatch(updateScore(finalScore));
+        setTimeout(() => navigate("/sequence-memory"), 1000);
     };
 
     const resetGame = () => {
@@ -99,12 +99,12 @@ function Reaction() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-blue-900 text-white p-4">
-            <h1 className="text-4xl font-bold mb-4">Reaction Timer ⏱️</h1>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900 p-4">
+            <h1 className="text-4xl font-bold mb-4 text-blue-700">Reaction Timer ⏱️</h1>
 
             <div className="text-center mb-6">
-                <p className="text-lg mb-2">Click the button as fast as you can when it appears!</p>
-                <p className="text-sm text-gray-300">
+                <p className="text-lg mb-2 font-medium">Click the button as fast as you can when it appears!</p>
+                <p className="text-sm text-gray-600">
                     Rules:
                     - Reach the target score to win.
                     - Click within {levels[level].maxReactionTime}ms to succeed.
@@ -119,7 +119,7 @@ function Reaction() {
                         key={lvl}
                         onClick={() => changeLevel(lvl)}
                         className={`px-6 py-2 rounded-lg font-semibold transition-all ${
-                            level === lvl ? 'bg-blue-600 scale-110 shadow-lg' : 'bg-blue-500 opacity-80 hover:opacity-100'
+                            level === lvl ? 'bg-blue-500 text-white scale-110 shadow-md' : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
                         }`}
                     >
                         {lvl.charAt(0).toUpperCase() + lvl.slice(1)}
@@ -127,10 +127,10 @@ function Reaction() {
                 ))}
             </div>
 
-            {isStarted && <p className="text-lg mb-4">Difficulty: <strong>{level.charAt(0).toUpperCase() + level.slice(1)}</strong></p>}
+            {isStarted && <p className="text-lg mb-4 font-medium">Difficulty: <strong>{level.charAt(0).toUpperCase() + level.slice(1)}</strong></p>}
 
-            {gameStatus === 'win' && <p className="text-2xl text-green-400 mb-4">You Win! 🎉</p>}
-            {gameStatus === 'lose' && <p className="text-2xl text-red-400 mb-4">You Lose! 😢</p>}
+            {gameStatus === 'win' && <p className="text-2xl text-green-600 font-bold mb-4">You Win! 🎉</p>}
+            {gameStatus === 'lose' && <p className="text-2xl text-red-600 font-bold mb-4">You Lose! 😢</p>}
 
             {!isStarted && (
                 <button
@@ -142,20 +142,20 @@ function Reaction() {
             )}
 
             {isStarted && !isTargetVisible && (
-                <p className="text-xl text-gray-300 mt-4 animate-pulse">Wait for the button to appear...</p>
+                <p className="text-xl text-gray-500 mt-4 animate-pulse">Wait for the button to appear...</p>
             )}
 
             {isTargetVisible && !gameStatus && (
                 <button
                     onClick={handleClick}
-                    className="bg-blue-600 text-white px-8 py-4 rounded-lg text-2xl mt-4 hover:bg-blue-700 transition-all transform hover:scale-105 absolute"
+                    className="bg-blue-500 text-white px-8 py-4 rounded-lg text-2xl mt-4 hover:bg-blue-600 transition-all transform hover:scale-105 absolute shadow-lg"
                     style={buttonPosition}
                 >
                     CLICK ME NOW!
                 </button>
             )}
 
-            <div className="mt-6 text-xl">
+            <div className="mt-6 text-xl text-gray-800">
                 <p>Score: <strong>{score}</strong></p>
                 <p>Fails: <strong>{fails}</strong></p>
                 {reactionTime > 0 && <p>Reaction Time: <strong>{reactionTime}ms</strong></p>}
